@@ -1,0 +1,18 @@
+tenant_name="ajfc"
+app_name="test"
+app_owner_name="utkarsh"
+environment="hub"
+resource_group_location="centralindia"
+identities = [
+  {
+    identity_suffix = "github-terraform"
+    federated_credentials = [
+      {
+        name     = "main"
+        audience = ["api://AzureADTokenExchange"]
+        issuer   = "https://token.actions.githubusercontent.com"
+        subject  = "repo:asliutkarsh/DevSecOps-for-infrastructure-as-code:ref:refs/heads/main"
+      }
+    ]
+  }
+]
