@@ -6,6 +6,7 @@ resource_group_location="centralindia"
 identities = [
   {
     identity_suffix = "github-terraform"
+    role_definition_name = "Owner"
     federated_credentials = [
       {
         name     = "main"
