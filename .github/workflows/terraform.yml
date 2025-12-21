@@ -128,7 +128,17 @@ jobs:
         uses: hashicorp/setup-terraform@v3
         with:
           terraform_version: 1.14.0
+      
+      - name: Validate plan outputs
+        run: |
+          echo "working_dir='${{ needs.plan.outputs.working_dir }}'"
+          echo "state_key='${{ needs.plan.outputs.state_key }}'"
 
+          if [ -z "${{ needs.plan.outputs.state_key }}" ]; then
+            echo "ERROR: state_key is empty. Plan job did not produce outputs."
+            exit 1
+          fi
+          
       - name: Terraform Init
         working-directory: ${{ needs.plan.outputs.working_dir }}
         run: |
