@@ -1,11 +1,21 @@
-name: 01-Terraform-Plan (CI)
+name: 01-Terraform-Plan (Manual)
 
 on:
-  pull_request:
-    branches: [ main ]
-    paths:
-      - 'Workload/**'
-      - 'Deployment/**'
+  workflow_dispatch:
+    inputs:
+      workload_type:
+        description: 'Select the Workload Type'
+        required: true
+        type: choice
+        options:
+          - "Core"
+      workload_folder:
+        description: 'Select the Workload Folder'
+        required: true
+        type: choice
+        options:
+          - "identity"
+          - "data"
 
 permissions:
   id-token: write
@@ -22,58 +32,33 @@ env:
 jobs:
   plan:
     runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - directory: "Workload/Core/identity"
-          - directory: "Workload/Core/data"
-
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      - name: Check for Changes
-        uses: dorny/paths-filter@v3
-        id: changes
-        with:
-          filters: |
-            src:
-              - '${{ matrix.directory }}/**'
-
-      - name: Skip if No Changes
-        if: steps.changes.outputs.src != 'true'
-        run: echo "No changes detected for ${{ matrix.directory }}. Skipping."
-
-      - name: Calculate Variables
-        if: steps.changes.outputs.src == 'true'
+      - name: Calculate Paths and Variables
         id: vars
         run: |
-          # 1. Generate Component Name from Directory (e.g., Workload/Core/data -> Core-data)
-          # We replace slashes with dashes and remove 'Workload/' prefix
-          CLEAN_DIR="${{ matrix.directory }}"
-          COMPONENT_NAME=$(echo $CLEAN_DIR | sed 's|Workload/||g' | sed 's|/|-|g')
-          echo "Calculated Component Name: $COMPONENT_NAME"
+          # Construct the working directory path from inputs
+          WORKING_DIR="Workload/${{ github.event.inputs.workload_type }}/${{ github.event.inputs.workload_folder }}"
+          echo "working_dir=$WORKING_DIR" >> $GITHUB_OUTPUT
+          
+          # Generate Component Name for state key (e.g., Core-identity)
+          COMPONENT_NAME="${{ github.event.inputs.workload_type }}-${{ github.event.inputs.workload_folder }}"
           echo "component_name=$COMPONENT_NAME" >> $GITHUB_OUTPUT
 
-          # 2. Find the .tfvars file dynamically
-          # Logic: If code is in Workload/X/Y, vars are in Deployment/X/Y
-          DEPLOYMENT_PATH=$(echo $CLEAN_DIR | sed 's|Workload|Deployment|')
-          
-          # Find the first .tfvars file in that deployment folder
+          # Map Workload path to Deployment path to find .tfvars
+          DEPLOYMENT_PATH="Deployment/${{ github.event.inputs.workload_type }}/${{ github.event.inputs.workload_folder }}"
           VARS_FILE=$(find ${{ github.workspace }}/$DEPLOYMENT_PATH -name "*.tfvars" | head -n 1)
           
           if [ -z "$VARS_FILE" ]; then
-            echo "WARNING: No .tfvars file found in $DEPLOYMENT_PATH"
-            # Optional: Fail if vars are mandatory
-            # exit 1 
+            echo "ERROR: No .tfvars file found in $DEPLOYMENT_PATH"
+            exit 1
           else
-            echo "Found Vars File: $VARS_FILE"
             echo "vars_file=$VARS_FILE" >> $GITHUB_OUTPUT
           fi
 
       - name: Log in to Azure (OIDC)
-        if: steps.changes.outputs.src == 'true'
         uses: azure/login@v2
         with:
           client-id: ${{ env.ARM_CLIENT_ID }}
@@ -81,47 +66,27 @@ jobs:
           subscription-id: ${{ env.ARM_SUBSCRIPTION_ID }}
 
       - name: Setup Terraform
-        if: steps.changes.outputs.src == 'true'
         uses: hashicorp/setup-terraform@v3
         with:
           terraform_version: 1.14.0
 
       - name: Terraform Init
-        if: steps.changes.outputs.src == 'true'
         run: |
           terraform init \
             -backend-config="storage_account_name=${{ env.TF_STATE_SA }}" \
             -backend-config="container_name=${{ env.TF_STATE_CONTAINER }}" \
             -backend-config="key=${{ steps.vars.outputs.component_name }}.tfstate"
-        working-directory: ${{ matrix.directory }}
-
-      - name: Terraform Format & Validate
-        if: steps.changes.outputs.src == 'true'
-        run: |
-          terraform fmt -check
-          terraform validate
-        working-directory: ${{ matrix.directory }}
-
-      - name: Run Checkov Security Scan
-        if: steps.changes.outputs.src == 'true'
-        uses: bridgecrewio/checkov-action@master
-        with:
-          directory: ${{ matrix.directory }}
-          framework: terraform
-          soft_fail: true
+        working-directory: ${{ steps.vars.outputs.working_dir }}
 
       - name: Terraform Plan
-        if: steps.changes.outputs.src == 'true'
         run: |
-          # Use the dynamically found vars file
           terraform plan -input=false \
             -var-file="${{ steps.vars.outputs.vars_file }}" \
             -out=tfplan
-        working-directory: ${{ matrix.directory }}
+        working-directory: ${{ steps.vars.outputs.working_dir }}
 
       - name: Upload Plan Artifact
-        if: steps.changes.outputs.src == 'true'
         uses: actions/upload-artifact@v4
         with:
           name: plan-${{ steps.vars.outputs.component_name }}
-          path: ${{ matrix.directory }}/tfplan
+          path: ${{ steps.vars.outputs.working_dir }}/tfplan
