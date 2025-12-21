@@ -13,6 +13,12 @@ identities = [
         audience = ["api://AzureADTokenExchange"]
         issuer   = "https://token.actions.githubusercontent.com"
         subject  = "repo:asliutkarsh/DevSecOps-for-infrastructure-as-code:ref:refs/heads/main"
+      },
+      {
+        name     = "env-prod"
+        audience = ["api://AzureADTokenExchange"]
+        issuer   = "https://token.actions.githubusercontent.com"
+        subject  = "repo:asliutkarsh/DevSecOps-for-infrastructure-as-code:environment:production"
       }
     ]
   }
