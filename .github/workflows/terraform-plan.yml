@@ -84,6 +84,7 @@ jobs:
         run: |
           terraform plan -input=false \
             -var-file="${{ steps.vars.outputs.vars_file }}" \
+            -var="subscription_id=${{ env.ARM_SUBSCRIPTION_ID }}" \
             -out=tfplan
         working-directory: ${{ steps.vars.outputs.working_dir }}
 
