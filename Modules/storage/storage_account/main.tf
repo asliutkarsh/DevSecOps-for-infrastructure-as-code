@@ -9,6 +9,9 @@ resource "azurerm_storage_account" "storage_account" {
 
   is_hns_enabled                  = var.is_hns_enabled
   allow_nested_items_to_be_public = var.allow_nested_items_to_be_public
+  blob_properties {
+    versioning_enabled = var.blob_versioning_enabled
+  }
 
   tags = var.storage_account_tags
 }
