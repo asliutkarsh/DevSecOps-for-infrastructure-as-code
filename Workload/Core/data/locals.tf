@@ -16,6 +16,7 @@ locals {
   public_network_access           = true
   is_hns_enabled                  = false
   allow_nested_items_to_be_public = false
+  blob_versioning_enabled         = true
 
   storage_container_name = "tfstate"
   container_access_type  = "private"
