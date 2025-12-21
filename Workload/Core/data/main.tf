@@ -16,6 +16,7 @@ module "storage_account" {
   is_hns_enabled                      = local.is_hns_enabled
   allow_nested_items_to_be_public     = local.allow_nested_items_to_be_public
   storage_account_tags                = local.common_tags
+  blob_versioning_enabled             = local.blob_versioning_enabled
 
   depends_on = [module.resource_group]
 }

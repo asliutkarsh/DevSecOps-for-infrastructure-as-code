@@ -51,3 +51,8 @@ variable "allow_nested_items_to_be_public" {
   type        = bool
   description = "The allow nested items to be public for the storage account."
 }
+
+variable "blob_versioning_enabled" {
+  type        = bool
+  description = "The blob versioning enabled for the storage account."
+}
