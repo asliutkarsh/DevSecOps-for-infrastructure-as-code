@@ -38,6 +38,7 @@ jobs:
       state_key: ${{ steps.vars.outputs.state_key }}
       component_name: ${{ steps.vars.outputs.component_name }}
       vars_file: ${{ steps.vars.outputs.vars_file }}
+      plan_exit_code: ${{ steps.tfplan.outputs.plan_exit_code }}
 
     steps:
       - uses: actions/checkout@v4
@@ -90,12 +91,26 @@ jobs:
             -backend-config="key=${{ steps.vars.outputs.state_key }}"
 
       - name: Terraform Plan
+        id: tfplan
         working-directory: ${{ steps.vars.outputs.working_dir }}
+        shell: bash
         run: |
+          set +e
           terraform plan -input=false \
             -var-file="${{ steps.vars.outputs.vars_file }}" \
             -var="subscription_id=${{ env.ARM_SUBSCRIPTION_ID }}" \
             -out=tfplan
+
+          PLAN_EXIT_CODE=$?
+          echo "plan_exit_code=$PLAN_EXIT_CODE" >> "$GITHUB_OUTPUT"
+
+          if [ "$PLAN_EXIT_CODE" -eq 1 ]; then
+            echo "Terraform plan failed"
+            exit 1
+          fi
+
+          # exit 0 for both 0 and 2
+          exit 0
 
       - name: Upload Plan Artifact
         uses: actions/upload-artifact@v4
@@ -129,6 +144,12 @@ jobs:
         with:
           terraform_version: 1.14.0
       
+      - name: Fail if no changes
+        if: needs.plan.outputs.plan_exit_code == '0'
+        run: |
+          echo "No changes detected. Skipping apply."
+          exit 0
+ 
       - name: Validate plan outputs
         run: |
           echo "working_dir='${{ needs.plan.outputs.working_dir }}'"
@@ -138,7 +159,7 @@ jobs:
             echo "ERROR: state_key is empty. Plan job did not produce outputs."
             exit 1
           fi
-          
+
       - name: Terraform Init
         working-directory: ${{ needs.plan.outputs.working_dir }}
         run: |
