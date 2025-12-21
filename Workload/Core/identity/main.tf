@@ -18,7 +18,7 @@ module "user_assigned_identity" {
 module "role_assignment" {
   source               = "../../../Modules/role_assignment"
   for_each             = local.role_definition_name_per_identity
-  scope                = module.user_assigned_identity[each.key].user_assigned_identity_id
+  scope                = data.azurerm_subscription.subscription.id
   role_definition_name = each.value
   principal_id         = module.user_assigned_identity[each.key].user_assigned_identity_principal_id
   depends_on           = [module.user_assigned_identity]
