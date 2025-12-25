@@ -15,7 +15,7 @@ on:
 
 jobs:
   plan:
-    uses: asliutkarsh/DevSecOps-for-infrastructure-as-code/.github/workflows/terraform/terraform-plan.yml@main
+    uses: asliutkarsh/DevSecOps-for-infrastructure-as-code/.github/workflows/terraform-plan.yml@main
     with:
       working_directory: terraform/workloads/core/${{ inputs.component }}
       state_key: core/${{ inputs.component }}.tfstate
@@ -24,7 +24,7 @@ jobs:
 
   apply:
     needs: plan
-    uses: asliutkarsh/DevSecOps-for-infrastructure-as-code/.github/workflows/terraform/terraform-apply.yml@main
+    uses: asliutkarsh/DevSecOps-for-infrastructure-as-code/.github/workflows/terraform-apply.yml@main
     with:
       working_directory: terraform/workloads/core/${{ inputs.component }}
       state_key: core/${{ inputs.component }}.tfstate
