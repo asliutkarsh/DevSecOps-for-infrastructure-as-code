@@ -13,6 +13,10 @@ on:
           - identity
           - governance
 
+permissions:
+  id-token: write
+  contents: read
+
 jobs:
   plan:
     uses: ./.github/workflows/terraform-plan.yml
