@@ -34,5 +34,5 @@ jobs:
       working_directory: Workload/Core/${{ inputs.component }}
       state_key: core/${{ inputs.component }}.tfstate
       component_name: core-${{ inputs.component }}
-      environment: core
+      environment: production # for now tocreate core federation cred
     secrets: inherit
