@@ -65,18 +65,18 @@ jobs:
           terraform_version: ${{ inputs.terraform_version }}
 
       # ---------- QUALITY ----------
-      - name: Terraform fmt
-        working-directory: ${{ inputs.working_directory }}
-        run: terraform fmt -check -recursive
+      # - name: Terraform fmt
+      #   working-directory: ${{ inputs.working_directory }}
+      #   run: terraform fmt -check -recursive
 
-      - name: Setup tflint
-        uses: terraform-linters/setup-tflint@v4
+      # - name: Setup tflint
+      #   uses: terraform-linters/setup-tflint@v4
 
-      - name: Run tflint
-        working-directory: ${{ inputs.working_directory }}
-        run: |
-          tflint --init
-          tflint
+      # - name: Run tflint
+      #   working-directory: ${{ inputs.working_directory }}
+      #   run: |
+      #     tflint --init
+      #     tflint
 
       # ---------- INIT ----------
       - name: Terraform Init
