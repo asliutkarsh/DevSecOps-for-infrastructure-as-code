@@ -24,7 +24,8 @@ jobs:
       working_directory: terraform/workloads/core/${{ inputs.component }}
       state_key: core/${{ inputs.component }}.tfstate
       component_name: core-${{ inputs.component }}
-      tfvars_file: terraform/deployment/core/${{ inputs.component }}/core.tfvars
+      tfvars_file: terraform/deployment/core/${{ inputs.component }}/${{ inputs.component }}.tfvars
+    secrets: inherit
 
   apply:
     needs: plan
@@ -34,3 +35,4 @@ jobs:
       state_key: core/${{ inputs.component }}.tfstate
       component_name: core-${{ inputs.component }}
       environment: core
+    secrets: inherit
