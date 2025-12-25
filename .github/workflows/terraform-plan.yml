@@ -101,7 +101,7 @@ jobs:
           set +e
           terraform plan \
             -input=false \
-            -var-file="${{ inputs.tfvars_file }}" \
+            -var-file="${{ github.workspace }}/Deployment/Core/identity/identity.tfvars" \
             -out=tfplan
 
           EXIT_CODE=$?
