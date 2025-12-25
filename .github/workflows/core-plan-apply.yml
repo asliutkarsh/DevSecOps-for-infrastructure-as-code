@@ -1,0 +1,33 @@
+name: Core-Terraform-Plan-Apply
+
+on:
+  workflow_dispatch:
+    inputs:
+      component:
+        description: Core component
+        required: true
+        type: choice
+        options:
+          - network
+          - data
+          - identity
+          - governance
+
+jobs:
+  plan:
+    uses: ./.github/workflows/terraform/terraform-plan.yml
+    with:
+      working_directory: terraform/workloads/core/${{ inputs.component }}
+      state_key: core/${{ inputs.component }}.tfstate
+      component_name: core-${{ inputs.component }}
+      tfvars_file: terraform/deployment/core/${{ inputs.component }}/core.tfvars
+
+  apply:
+    needs: plan
+    if: needs.plan.outputs.plan_exit_code != '0'
+    uses: ./.github/workflows/terraform/terraform-apply.yml
+    with:
+      working_directory: terraform/workloads/core/${{ inputs.component }}
+      state_key: core/${{ inputs.component }}.tfstate
+      component_name: core-${{ inputs.component }}
+      environment: core
