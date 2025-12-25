@@ -101,6 +101,7 @@ jobs:
           set +e
           terraform plan \
             -input=false \
+            -var="subscription_id=${{ secrets.AZURE_SUBSCRIPTION_ID }}" \
             -var-file="${{ github.workspace }}/Deployment/Core/identity/identity.tfvars" \
             -out=tfplan
 
