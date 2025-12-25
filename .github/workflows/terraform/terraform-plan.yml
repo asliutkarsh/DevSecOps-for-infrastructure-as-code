@@ -20,10 +20,10 @@ on:
         type: string
         default: "1.6.6"
 
-    outputs:
-      plan_exit_code:
-        description: "Terraform plan exit code"
-        value: ${{ jobs.plan.outputs.plan_exit_code }}
+    # outputs:
+    #   plan_exit_code:
+    #     description: "Terraform plan exit code"
+    #     value: ${{ jobs.plan.outputs.plan_exit_code }}
 
 permissions:
   id-token: write

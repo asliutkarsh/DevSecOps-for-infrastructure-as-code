@@ -15,7 +15,7 @@ on:
 
 jobs:
   plan:
-    uses: ./.github/workflows/terraform/terraform-plan.yml
+    uses: asliutkarsh/DevSecOps-for-infrastructure-as-code/.github/workflows/terraform/terraform-plan.yml@main
     with:
       working_directory: terraform/workloads/core/${{ inputs.component }}
       state_key: core/${{ inputs.component }}.tfstate
@@ -24,8 +24,7 @@ jobs:
 
   apply:
     needs: plan
-    if: needs.plan.outputs.plan_exit_code != '0'
-    uses: ./.github/workflows/terraform/terraform-apply.yml
+    uses: asliutkarsh/DevSecOps-for-infrastructure-as-code/.github/workflows/terraform/terraform-apply.yml@main
     with:
       working_directory: terraform/workloads/core/${{ inputs.component }}
       state_key: core/${{ inputs.component }}.tfstate
