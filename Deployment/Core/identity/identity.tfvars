@@ -21,7 +21,7 @@ identities = [
         subject  = "repo:asliutkarsh/DevSecOps-for-infrastructure-as-code:environment:production"
       },
       {
-        name     = "env-dev"
+        name     = "core-hub"
         audience = ["api://AzureADTokenExchange"]
         issuer   = "https://token.actions.githubusercontent.com"
         subject  = "repo:asliutkarsh/DevSecOps-for-infrastructure-as-code:environment:core-hub"
