@@ -21,17 +21,17 @@ jobs:
   plan:
     uses: ./.github/workflows/terraform-plan.yml
     with:
-      working_directory: terraform/workloads/core/${{ inputs.component }}
+      working_directory: workloads/core/${{ inputs.component }}
       state_key: core/${{ inputs.component }}.tfstate
       component_name: core-${{ inputs.component }}
-      tfvars_file: terraform/deployment/core/${{ inputs.component }}/${{ inputs.component }}.tfvars
+      tfvars_file: deployment/core/${{ inputs.component }}/${{ inputs.component }}.tfvars
     secrets: inherit
 
   apply:
     needs: plan
     uses: ./.github/workflows/terraform-apply.yml
     with:
-      working_directory: terraform/workloads/core/${{ inputs.component }}
+      working_directory: workloads/core/${{ inputs.component }}
       state_key: core/${{ inputs.component }}.tfstate
       component_name: core-${{ inputs.component }}
       environment: core
