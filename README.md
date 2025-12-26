@@ -181,6 +181,9 @@ Details (including required secrets and troubleshooting) are in:
 - **CI/CD implementation reference (workflows, inputs, examples)**:  
   [Docs/ci-cd-reference.md](./Docs/ci-cd-reference.md)
 
+- **Azure Naming Convention**:  
+  [Docs/azure_naming_convention.md](./Docs/azure_naming_convention.md)
+
 ---
 
 ## 🤝 Contributing
