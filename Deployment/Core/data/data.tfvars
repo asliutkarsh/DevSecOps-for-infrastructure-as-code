@@ -1,5 +1,5 @@
 tenant_name="ajfc"
-app_name="test"
-app_owner_name="utkarsh"
+app_owner_name="Platform Team"
 environment="hub"
 resource_group_location="centralindia"
+location_code="cin"

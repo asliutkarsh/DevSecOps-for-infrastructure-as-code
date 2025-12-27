@@ -1,5 +1,5 @@
 locals {
-  resource_group_name = "rg-${var.tenant_name}-${var.app_name}-${var.environment}-identity"
+  resource_group_name = "rg-${var.tenant_name}-hub-${var.location_code}-identity-01"
 
   identities_map = { for item in var.identities : item.identity_suffix => item }
 
@@ -15,13 +15,14 @@ locals {
     if length(item.federated_credentials) > 0
   }
 
-  identity_names = { for suffix in keys(local.identities_map) :
-    suffix => "id-${var.app_name}-${var.environment}-${suffix}"
+identity_names = { for suffix in keys(local.identities_map) :
+    suffix => "id-${var.tenant_name}-hub-${var.location_code}-${suffix}-01"
   }
 
-  common_tags = merge(var.tags, {
-    Environment  = var.environment
-    Project      = var.app_name
-    AppOwnerName = var.app_owner_name
+common_tags = merge(var.tags, {
+    Project     = "Hub"
+    Environment = "Shared-Core"
+    Owner       = var.app_owner_name
+    ManagedBy  = "Terraform"
   })
 }
