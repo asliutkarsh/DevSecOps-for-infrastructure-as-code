@@ -1,6 +1,5 @@
 tenant_name             = "ajfc"
 app_owner_name          = "Platform Team"
-environment             = "hub"
 resource_group_location = "centralindia"
 location_code           = "cin"
 
@@ -32,7 +31,7 @@ rbac_assignments = {
     role_name                         = "Owner"
     scope_type                        = "subscription"
     scope_name                        = "subscription"
-    managed_identities_resource_group = "rg-ajfc-hub-cin-core-01"
+    managed_identities_resource_group = "rg-ajfc-hub-cin-identity-01"
     description                       = "GitHub Actions Terraform identity with subscription owner access for infrastructure deployment"
   }
 }
