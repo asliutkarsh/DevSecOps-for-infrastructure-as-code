@@ -65,18 +65,24 @@ jobs:
           terraform_version: ${{ inputs.terraform_version }}
 
       # ---------- QUALITY ----------
-      # - name: Terraform fmt
-      #   working-directory: ${{ inputs.working_directory }}
-      #   run: terraform fmt -check -recursive
+      - name: Terraform fmt
+        working-directory: ${{ inputs.working_directory }}
+        run: terraform fmt -check -recursive
 
-      # - name: Setup tflint
-      #   uses: terraform-linters/setup-tflint@v4
+      - name: Setup tflint
+        uses: terraform-linters/setup-tflint@v6
+        with:
+          tflint_version: latest
+          cache: true
+      
+      - name: Init TFLint
+        run: tflint --init
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
 
-      # - name: Run tflint
-      #   working-directory: ${{ inputs.working_directory }}
-      #   run: |
-      #     tflint --init
-      #     tflint
+      - name: Run tflint
+        working-directory: ${{ inputs.working_directory }}
+        run: tflint -f compact
 
       # ---------- INIT ----------
       - name: Terraform Init
