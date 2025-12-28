@@ -18,11 +18,11 @@ locals {
   storage_container_name = "tfstate"
   container_access_type  = "private"
 
-common_tags = merge(var.tags, {
+  common_tags = merge(var.tags, {
     Project     = "Hub"
     Environment = "Shared-Core"
     Owner       = var.app_owner_name
-    ManagedBy  = "Terraform"
+    ManagedBy   = "Terraform"
   })
 
 }

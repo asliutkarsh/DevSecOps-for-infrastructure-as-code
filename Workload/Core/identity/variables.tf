@@ -42,7 +42,7 @@ variable "tags" {
 variable "identities" {
   type = list(object({
     identity_suffix = string
-    role_definition_name  = optional(string)
+    role_definition_name  = optional(map)
     federated_credentials = optional(list(object({
       name     = string
       audience = list(string)
@@ -61,7 +61,9 @@ variable "identities" {
     identities = [
       {
         identity_suffix = "github"
-        role_definition_name = "Storage Blob Data Contributor"
+        role_definition_name = {
+          "subscription" = "Owner"
+        }
         federated_credentials = [
           {
             name     = "main"

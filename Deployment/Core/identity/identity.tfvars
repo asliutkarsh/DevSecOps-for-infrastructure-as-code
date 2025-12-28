@@ -6,7 +6,9 @@ location_code="cin"
 identities = [
   {
     identity_suffix = "github-terraform"
-    role_definition_name = "Owner"
+    role_definition_map = {
+      "Subscription" = "Owner"
+    }
     federated_credentials = [
       {
         name     = "main"
