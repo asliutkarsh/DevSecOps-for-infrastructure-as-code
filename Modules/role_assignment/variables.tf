@@ -4,9 +4,8 @@ variable "scope" {
 }
 
 variable "role_definition_name" {
-  description = "(Optional) The name of a built-in Role."
+  description = "(Required) The name of a built-in Role."
   type        = string
-  nullable    = true
 }
 
 variable "principal_id" {
@@ -14,3 +13,14 @@ variable "principal_id" {
   type        = string
 }
 
+variable "description" {
+  description = "(Optional) The description for this role assignment."
+  type        = string
+  default     = null
+}
+
+variable "assignment_name" {
+  description = "(Optional) A unique UUID/GUID for this Role Assignment. One will be generated if not specified."
+  type        = string
+  default     = null
+}
