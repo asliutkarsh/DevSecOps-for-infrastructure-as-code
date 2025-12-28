@@ -26,13 +26,13 @@ identities = [
 ]
 
 rbac_assignments = {
-  # "github_terraform_subscription_access" = {
-  #   principal_type                    = "managed_identity"
-  #   principal_name                    = "id-ajfc-hub-cin-github-terraform-01"
-  #   role_name                         = "Owner"
-  #   scope_type                        = "subscription"
-  #   scope_name                        = "subscription"
-  #   managed_identities_resource_group = "rg-ajfc-hub-cin-core-01"
-  #   description                       = "GitHub Actions Terraform identity with subscription owner access for infrastructure deployment"
-  # }
+  "github_terraform_subscription_access" = {
+    principal_type                    = "managed_identity"
+    principal_name                    = "id-ajfc-hub-cin-github-terraform-01"
+    role_name                         = "Owner"
+    scope_type                        = "subscription"
+    scope_name                        = "subscription"
+    managed_identities_resource_group = "rg-ajfc-hub-cin-core-01"
+    description                       = "GitHub Actions Terraform identity with subscription owner access for infrastructure deployment"
+  }
 }
