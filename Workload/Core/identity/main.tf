@@ -26,7 +26,6 @@ module "role_assignment" {
   role_definition_name = each.value.role_name
   principal_id         = each.value.principal_id
   description          = each.value.description != null ? each.value.description : "RBAC assignment for ${each.value.principal_type} ${each.value.principal_name} to ${each.value.scope_type} ${each.value.scope_name}"
-  assignment_name      = each.key
 
   depends_on = [
     module.user_assigned_identity,

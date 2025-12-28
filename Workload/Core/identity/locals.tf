@@ -67,15 +67,15 @@ locals {
   # Final resolved RBAC assignments (only valid ones)
   # We will only include assignments where both principal and scope are found and valid
   resolved_rbac_assignments = {
-    for key in var.rbac_assignments : key => {
+    for key, assignment in var.rbac_assignments : key => {
       principal_id   = local.resolved_principals[key].principal_id
       principal_type = local.resolved_principals[key].principal_type
       principal_name = local.resolved_principals[key].principal_name
-      role_name      = var.rbac_assignments[key].role_name
+      role_name      = assignment.role_name
       scope_id       = local.resolved_scopes[key].scope_id
       scope_type     = local.resolved_scopes[key].scope_type
       scope_name     = local.resolved_scopes[key].scope_name
-      description    = lookup(var.rbac_assignments[key], "description", null)
+      description    = lookup(assignment, "description", null)
     }
     if local.resolved_principals[key].principal_id != null && local.resolved_scopes[key].scope_id != null && length(local.validation_errors) == 0
   }
