@@ -74,15 +74,14 @@ jobs:
         with:
           tflint_version: latest
           cache: true
-      
-      - name: Init TFLint
-        run: tflint --init
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
 
       - name: Run tflint
         working-directory: ${{ inputs.working_directory }}
-        run: tflint -f compact
+        run: |
+          tflint --init
+          tflint -f compact
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
 
       # ---------- INIT ----------
       - name: Terraform Init
