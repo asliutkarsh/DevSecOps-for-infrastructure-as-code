@@ -12,5 +12,5 @@ resource "azurerm_federated_identity_credential" "federated_credential" {
   issuer              = each.value.issuer
   parent_id           = azurerm_user_assigned_identity.user_assigned_identity.id
   subject             = each.value.subject
-  depends_on = [ azurerm_user_assigned_identity.user_assigned_identity ]
+  depends_on          = [azurerm_user_assigned_identity.user_assigned_identity]
 }

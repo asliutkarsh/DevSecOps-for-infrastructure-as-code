@@ -1,10 +1,7 @@
 locals {
-  resource_group_name = "rg-${var.tenant_name}-${var.app_name}-${var.environment}-data"
+  resource_group_name = "rg-${var.tenant_name}-hub-${var.location_code}-data-01"
 
-  clean_app = substr(var.app_name, 0, 10)
-  clean_env = substr(var.environment, 0, 3)
-
-  storage_account_name = lower("st${local.clean_app}${local.clean_env}data")
+  storage_account_name = lower("st${var.tenant_name}hub${var.location_code}data01")
 
   standard_storage_tier = "Standard"
   storage_replication   = "LRS"
@@ -22,9 +19,10 @@ locals {
   container_access_type  = "private"
 
   common_tags = merge(var.tags, {
-    Environment  = var.environment
-    Project      = var.app_name
-    AppOwnerName = var.app_owner_name
+    Project     = "Hub"
+    Environment = "Shared-Core"
+    Owner       = var.app_owner_name
+    ManagedBy   = "Terraform"
   })
 
 }

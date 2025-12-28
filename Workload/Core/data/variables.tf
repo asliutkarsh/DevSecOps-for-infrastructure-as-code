@@ -8,11 +8,6 @@ variable "subscription_id" {
   description = "Subscription ID"
 }
 
-variable "app_name" {
-  type        = string
-  description = "Application Name - Eg: "
-}
-
 variable "app_owner_name" {
   type        = string
   description = "Application Owner Name"
@@ -28,8 +23,13 @@ variable "resource_group_location" {
   description = "Resource Group Location"
 }
 
+variable "location_code" {
+  type        = string
+  description = "Location code for Azure region (e.g., cin, eus)"
+}
+
 variable "tags" {
   type        = map(string)
-  description = "Common Tags"
+  description = "Extra tags"
   default     = {}
 }

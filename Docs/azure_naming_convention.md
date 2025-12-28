@@ -63,6 +63,7 @@ Use these standard abbreviations. Do not invent new ones without approval.
 | :--- | :--- | :--- | :--- |
 | **Resource Group** | `rg` | `rg-ajfc-ragbot-dev-cin-data-01` | `rg-ajfc-hub-cin-data-01` |
 | **Virtual Network** | `vnet` | `vnet-ajfc-ragbot-dev-cin-01` | `vnet-ajfc-hub-cin-01` |
+| **Subnet** | `snet` | `snet-private-endpoint` | `AzureFirewallSubnet` |
 | **NSG** | `nsg` | `nsg-ajfc-ragbot-dev-cin-web-01` | N/A |
 | **Storage Account** | `st` | `stajfcragbotdevcindata01` | `stajfchubcindata01` |
 | **Key Vault** | `kv` | `kv-ajfc-ragbot-dev-cin-data-01` | `kv-ajfc-hub-cin-data-01` |

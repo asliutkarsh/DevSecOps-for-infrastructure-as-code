@@ -23,7 +23,7 @@ variable "storage_account_tier" {
   type        = string
   description = "The performance tier for the storage account."
   validation {
-    condition = var.storage_account_tier == "Standard" || var.storage_account_tier == "Premium"
+    condition     = var.storage_account_tier == "Standard" || var.storage_account_tier == "Premium"
     error_message = "The storage account tier must be Standard or Premium."
   }
 }
@@ -32,7 +32,7 @@ variable "storage_account_replication_type" {
   type        = string
   description = "The replication type for the storage account."
   validation {
-    condition = var.storage_account_replication_type == "LRS" || var.storage_account_replication_type == "GRS" || var.storage_account_replication_type == "RAGRS" || var.storage_account_replication_type == "ZRS" || var.storage_account_replication_type == "RAZRS"
+    condition     = var.storage_account_replication_type == "LRS" || var.storage_account_replication_type == "GRS" || var.storage_account_replication_type == "RAGRS" || var.storage_account_replication_type == "ZRS" || var.storage_account_replication_type == "RAZRS"
     error_message = "The storage account replication type must be LRS, GRS, RAGRS, ZRS, or RAZRS."
   }
 }
