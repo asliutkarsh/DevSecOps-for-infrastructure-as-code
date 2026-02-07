@@ -25,6 +25,8 @@ jobs:
       state_key: core/${{ inputs.component }}.tfstate
       component_name: core-${{ inputs.component }}
       tfvars_file: Deployment/Core/${{ inputs.component }}/${{ inputs.component }}.tfvars
+      # additional_args: >-
+      #   -var="env_name=production"
     secrets: inherit
 
   apply:
