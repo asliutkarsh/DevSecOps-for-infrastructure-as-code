@@ -4,5 +4,4 @@ resource "azurerm_role_assignment" "rbac" {
   principal_id         = var.principal_id
   
   description = var.description
-  name        = var.assignment_name
 }
