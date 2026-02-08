@@ -104,12 +104,6 @@ locals {
   #   for key in keys(local.route_table_names) : key => module.rt_subnet[key].route_table_id
   # }
 
-  subnet_delegation_null = {
-    subnet_delegation_name  = ""
-    service_delegation_name = ""
-    actions                 = []
-  }
-
   common_tags = merge(var.tags, {
     Project     = "Hub"
     Environment = title(var.environment)
