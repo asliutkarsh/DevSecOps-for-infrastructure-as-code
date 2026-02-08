@@ -24,6 +24,7 @@ variable "virtual_network_tags" {
 }
 
 variable "dns_server" {
-  type        = optional(list(string))
+  type        = list(string)
   description = "If Custom DNS value is provided then it will be used else default DNS will be used"
+  default     = []
 }
