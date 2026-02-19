@@ -59,14 +59,14 @@ subnets_config = {
 subnet_nsg_rule_map = {
   pe = [
     { name = "deny_all_inbound" } # Uses default priority (100)
-  ]
+  ],
   test = [
     { name = "deny_all_inbound", priority = 200 }, # Override priority
     { name = "deny_all_outbound", priority = 300 } # Override priority
-  ]
-  appgateway = [
-    { name = "allow_https_inbound" } # Uses default priority (200)
-  ]
+  ],
+  # appgateway = [
+  #   { name = "allow_https_inbound" } # Uses default priority (200)
+  # ]
 }
 
 

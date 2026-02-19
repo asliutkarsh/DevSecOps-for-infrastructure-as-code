@@ -1,12 +1,14 @@
+# Resource Group
 module "resource_group" {
-  source                  = "../../../Modules/resource_group"
+  source                  = "../../../../Modules/resource_group"
   resource_group_name     = local.resource_group_name
   resource_group_location = var.resource_group_location
   tags                    = local.common_tags
 }
 
+# Virtual Network
 module "virtual_network" {
-  source                        = "../../../Modules/networking/virtual_network"
+  source                        = "../../../../Modules/networking/virtual_network"
   virtual_network_name          = local.vnet_name
   virtual_network_location      = var.resource_group_location
   resource_group_name           = local.resource_group_name
@@ -17,11 +19,11 @@ module "virtual_network" {
   depends_on = [module.resource_group]
 }
 
-# Create NSG for each subnet that has NSG rules defined
+# Create NSG for each subnet that has NSG rules defined (compute, pe)
 module "nsg_subnet" {
   for_each = local.nsg_names
 
-  source              = "../../../Modules/networking/network_security_group"
+  source              = "../../../../Modules/networking/network_security_group"
   nsg_name            = each.value
   nsg_location        = var.resource_group_location
   resource_group_name = local.resource_group_name
@@ -31,11 +33,11 @@ module "nsg_subnet" {
   depends_on = [module.resource_group]
 }
 
-# Create Route Table for each subnet that has routes defined
+# Create Route Table for each route table key (compute, aks)
 module "rt_subnet" {
   for_each = local.route_table_names
 
-  source               = "../../../Modules/networking/route_table"
+  source               = "../../../../Modules/networking/route_table"
   route_table_name     = each.value
   route_table_location = var.resource_group_location
   resource_group_name  = local.resource_group_name
@@ -50,7 +52,7 @@ module "rt_subnet" {
 module "subnet" {
   for_each = var.subnets_config
 
-  source                     = "../../../Modules/networking/subnet"
+  source                     = "../../../../Modules/networking/subnet"
   subnet_name                = local.subnet_names[each.key]
   subnet_resource_group_name = local.resource_group_name
   subnet_address_prefixes    = [each.value.address_prefix]
@@ -62,13 +64,6 @@ module "subnet" {
 
   rt_id                 = lookup(local.subnet_route_table_ids, each.key, "")
   subnet_rt_association = each.value.route_table_key != ""
-
-  # Alternative (commented): Decoupled association logic
-  # Different route table per subnet
-  # rt_id = contains(keys(var.subnet_route_associations), each.key) ? (
-  #   lookup(local.subnet_route_table_ids, var.subnet_route_associations[each.key], "")
-  # ) : ""
-  # subnet_rt_association = contains(keys(var.subnet_route_associations), each.key)
 
   private_endpoint_network_policies             = each.value.private_endpoint_network_policies
   private_link_service_network_policies_enabled = each.value.private_link_service_network_policies_enabled
