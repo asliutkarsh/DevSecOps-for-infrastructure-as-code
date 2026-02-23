@@ -36,10 +36,10 @@ jobs:
   plan:
     uses: ./.github/workflows/terraform-plan.yml
     with:
-      working_directory: Workload/Spoke/${{ inputs.project }}/${{ inputs.component }}
+      working_directory: Workload/Spokes/${{ inputs.project }}/${{ inputs.component }}
       state_key: spoke/${{ inputs.project }}/${{ inputs.environment }}/${{ inputs.component }}.tfstate
       component_name: spoke-${{ inputs.project }}-${{ inputs.component }}
-      tfvars_file: Deployment/Spoke/${{ inputs.project }}/${{ inputs.component }}/${{ inputs.environment }}.${{ inputs.component }}.tfvars
+      tfvars_file: Deployment/Spokes/${{ inputs.project }}/${{ inputs.component }}/${{ inputs.environment }}.${{ inputs.component }}.tfvars
       # additional_args: >-
       #   -var="env_name=production"
     secrets: inherit
@@ -48,7 +48,7 @@ jobs:
     needs: plan
     uses: ./.github/workflows/terraform-apply.yml
     with:
-      working_directory: Workload/Spoke/${{ inputs.project }}/${{ inputs.component }}
+      working_directory: Workload/Spokes/${{ inputs.project }}/${{ inputs.component }}
       state_key: spoke/${{ inputs.project }}/${{ inputs.environment }}/${{ inputs.component }}.tfstate
       component_name: spoke-${{ inputs.project }}-${{ inputs.component }}
       environment: spoke-${{ inputs.project }}-${{ inputs.environment }}
