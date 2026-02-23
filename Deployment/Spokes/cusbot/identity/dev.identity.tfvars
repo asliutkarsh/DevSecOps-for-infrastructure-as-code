@@ -16,7 +16,7 @@ managed_identities = {
   aks = {
     federated_credentials = {}
   }
-  aks_agent = {
+  aks-agentpool = {
     federated_credentials = {}
   }
 }
