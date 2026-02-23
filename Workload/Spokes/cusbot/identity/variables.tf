@@ -30,12 +30,6 @@ variable "location_code" {
   default     = "cin"
 }
 
-variable "instance" {
-  type        = string
-  description = "Instance number (01, 02, etc.)"
-  default     = "01"
-}
-
 variable "app_owner_name" {
   type        = string
   description = "Team or individual owning this resource"
